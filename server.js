@@ -16,8 +16,30 @@ function handler(request, response) {
 }
 
 io.sockets.on('connection', function(socket) {
+
+	socket.on('set avatar', function(name){
+		var oldName = '';
+		socket.get('avatar', function(error, name){
+			oldName = name;
+		});
+
+		socket.set('avatar', name, function() {
+			socket.emit('avatar set', name);
+			var message = '';
+			if (oldName)
+				message = oldName + ' is now known as ' + name;
+			else
+				message = name + ' joined the conversation.';
+			
+			socket.broadcast.emit('notification', message);
+		});
+	});
+
 	socket.on('postMessage', function(data){
+		socket.get('avatar', function(error, name){
+			data.avatar = name;
+		});
 		socket.broadcast.emit('message', data);
-		socket.emit('message', {text: data.text});
+		socket.emit('message', data);
 	});
 });
