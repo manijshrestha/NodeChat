@@ -18,6 +18,6 @@ function handler(request, response) {
 io.sockets.on('connection', function(socket) {
 	socket.on('postMessage', function(data){
 		socket.broadcast.emit('message', data);
-		socket.emit('message', {text: data.text});
+		socket.emit('message', data );
 	});
 });

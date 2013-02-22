@@ -10,13 +10,13 @@
 
     	//Bind the "send" button to do a post
     	$("#send-btn").bind('click', function() {
-    		socket.emit('postMessage', {avatar: $("#avatar").val(), text: $("#message-box").val()});
+    		socket.emit('postMessage', {text: $("#message-box").val()});
     		$("#message-box").val('');
     	});
 
     	//on socket message from server
     	socket.on('message', function(data) {
-    		$("#message-board").append( data.avatar + ': ' +data.text + "<br/>");
+    		$("#message-board").append( data.text + "<br/>");
     	});
 
     });
@@ -31,7 +31,6 @@
 <body>
 	<div id="content">
 		<div id="message-board"></div>
-		<input id="avatar" type="text" size="20" placeholder="Avatar Name" />
 		<input id="message-box" type="text" size="100" placeholder="Type a message..."/>
 		<button id="send-btn">send</button>
 	</div>
